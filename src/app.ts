@@ -3,10 +3,12 @@ import * as service from "./service";
 import { extractFromAuthHeader } from "./util";
 import {createMcpServer} from "./mcp";
 import { auth } from "@civic/auth-mcp"
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use(await auth());
 
 app.get("/todo", (req, res) => {
