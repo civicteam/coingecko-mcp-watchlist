@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@civic/auth-mcp':
-        specifier: ^0.1.16
-        version: 0.1.16(@modelcontextprotocol/sdk@1.12.2)
+        specifier: ^0.2.0
+        version: 0.2.0(@modelcontextprotocol/sdk@1.12.2)
       '@modelcontextprotocol/sdk':
         specifier: ^1.12.2
         version: 1.12.2
@@ -42,8 +42,8 @@ importers:
 
 packages:
 
-  '@civic/auth-mcp@0.1.16':
-    resolution: {integrity: sha512-9PnjVNoT7sqGyQGvHNbHwnjIfCkAKiXZD0Ue5jfnCvP2ms9lO4TTlq4aEudESUdhD1E6aweQklt8pmYxSKshpw==}
+  '@civic/auth-mcp@0.2.0':
+    resolution: {integrity: sha512-O9QwWrveCK5vPIN/M0TkxfmNbDWrQ2WniUqn9E83KL+w4Ipe8HKFZ8HTncC5tXHQcwyjPXpO+jMGv5pUft9QFg==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       '@modelcontextprotocol/sdk': ^1.12.0
@@ -723,7 +723,7 @@ packages:
 
 snapshots:
 
-  '@civic/auth-mcp@0.1.16(@modelcontextprotocol/sdk@1.12.2)':
+  '@civic/auth-mcp@0.2.0(@modelcontextprotocol/sdk@1.12.2)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.12.2
       escape-html: 1.0.3
