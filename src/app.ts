@@ -4,6 +4,7 @@ import { extractFromAuthHeader } from "./util";
 import {createMcpServer} from "./mcp";
 import { auth } from "@civic/auth-mcp"
 import cors from "cors";
+import { closeCoinGeckoProxy } from "./coingecko-proxy";
 
 const app = express();
 
@@ -45,7 +46,7 @@ app.use((req, res, next) => {
 app.get("/.well-known/mcp", (_req, res) => {
   res.status(200).json({
     mcpServers: {
-      "todo-app": {
+      "todo-app-with-coingecko": {
         command: "node",
         args: ["--version"], // dummy, not used for HTTP
         transport: {
@@ -66,9 +67,10 @@ app.post("/mcp", async (req, res) => {
   
   await transport.handleRequest(req, res, req.body);
   
-  res.on('close', () => {
+  res.on('close', async () => {
     transport.close();
     mcpServer.close();
+    // Don't close the CoinGecko proxy on every request - keep it alive for reuse
   })
 });
 
@@ -81,12 +83,13 @@ app.get("/mcp", async (req, res) => {
       tools: {}
     },
     serverInfo: {
-      name: "Todo app",
+      name: "Todo app with CoinGecko",
       version: "0.0.1"
     }
   });
   transport.close();
   mcpServer.close();
+  // Keep CoinGecko proxy alive for reuse
 });
 
 // MCP HTTP transport discovery at root
@@ -118,3 +121,16 @@ app.delete("/todo/:index", (req, res) => {
 
 // Start the server
 app.listen(3000, () => console.log("Todo app listening on port 3000"));
+
+// Cleanup on process exit
+process.on('SIGINT', async () => {
+  console.log('Shutting down...');
+  await closeCoinGeckoProxy();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('Shutting down...');
+  await closeCoinGeckoProxy();
+  process.exit(0);
+});

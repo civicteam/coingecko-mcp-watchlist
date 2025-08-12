@@ -19,6 +19,8 @@
     "@types/express": "^5.0.3",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "zod": "^3.25.64"
+    "zod": "^3.25.64",
+    "node-fetch": "^3.3.2",
+    "eventsource": "^2.0.2"
   }
 }
