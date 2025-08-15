@@ -50,7 +50,7 @@ export async function createMcpServer() {
         {
             index: z.number().describe("The index of the todo to be removed (zero-indexed)")
         },
-        async ({index}, extra) => {
+        async ({index}: {index: number}, extra: any) => {
             const user = extra.authInfo?.extra?.sub as string;
             service.deleteTodo(user, index);
             return {

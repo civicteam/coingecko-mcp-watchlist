@@ -1,6 +1,7 @@
 {
-  "name": "todo-app",
+  "name": "coingecko-mcp-watchlist",
   "version": "1.0.0",
+  "description": "A secure MCP server for crypto portfolio management with CoinGecko integration and Civic Auth - built for the CoinGecko MCP Hackathon",
   "scripts": {
     "start": "tsx src/app.ts",
     "dev": "tsx watch src/app.ts"

@@ -46,7 +46,7 @@ app.use((req, res, next) => {
 app.get("/.well-known/mcp", (_req, res) => {
   res.status(200).json({
     mcpServers: {
-      "todo-app-with-coingecko": {
+      "crypto-watchlist-with-coingecko": {
         command: "node",
         args: ["--version"], // dummy, not used for HTTP
         transport: {
@@ -83,7 +83,7 @@ app.get("/mcp", async (req, res) => {
       tools: {}
     },
     serverInfo: {
-      name: "Todo app with CoinGecko",
+      name: "Crypto Watchlist with CoinGecko",
       version: "0.0.1"
     }
   });
