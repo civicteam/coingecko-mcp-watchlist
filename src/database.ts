@@ -375,13 +375,22 @@ class InMemoryDatabase {
 
   private enrichWatchlistWithCoins(watchlist: Watchlist): Watchlist {
     const coins = this.db.watchlistCoins.get(watchlist.id) || [];
-    const notes = this.getWatchlistNotes(watchlist.id, watchlist.userId);
+    const notes = this.getNotesForWatchlist(watchlist.id);
     
     return {
       ...watchlist,
       coins,
       notes,
     };
+  }
+
+  private getNotesForWatchlist(watchlistId: string, coinId?: string): WatchlistNote[] {
+    const allNotes = Array.from(this.db.notes.values());
+    return allNotes.filter(note => {
+      if (note.watchlistId !== watchlistId) return false;
+      if (coinId && note.coinId !== coinId) return false;
+      return true;
+    });
   }
 
   getStats(): DatabaseStats {
