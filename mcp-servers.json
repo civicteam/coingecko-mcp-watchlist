@@ -1,10 +1,16 @@
 {
-  "type": "stdio",
-  "command": "npx",
-  "args": [
-    "@civic/hub-bridge"
-  ],
-  "env": {
-    "MCP_REMOTE_URL": "http://localhost:3000/mcp"
+  "mcpServers": {
+    "coingecko_mcp_watchlist": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@civic/hub-bridge"
+      ],
+      "env": {
+        "MCP_REMOTE_URL": "http://localhost:3000/mcp",
+        "COINGECKO_PRO_API_KEY": "YOUR_PRO_API_KEY_HERE",
+        "COINGECKO_ENVIRONMENT": "pro"
+      }
+    }
   }
 }
