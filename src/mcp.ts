@@ -19,16 +19,27 @@ export async function createMcpServer() {
       isPublic: z.boolean().optional().describe("Make watchlist public (default: false)")
     },
     async ({ name, description, isPublic }, extra) => {
-      const user = extra.authInfo?.extra?.sub as string;
-      const watchlist = service.createWatchlist(user, { name, description, isPublic });
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(watchlist, null, 2),
-          },
-        ],
-      };
+      try {
+        const user = extra.authInfo?.extra?.sub as string;
+        const watchlist = service.createWatchlist(user, { name, description, isPublic });
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(watchlist, null, 2),
+            },
+          ],
+        };
+      } catch (error) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Error creating watchlist: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            },
+          ],
+        };
+      }
     }
   );
 
@@ -86,12 +97,12 @@ export async function createMcpServer() {
     },
     async ({ watchlistId }, extra) => {
       const user = extra.authInfo?.extra?.sub as string;
-      // TODO: Implement get watchlist logic with access control
+      const watchlist = service.getWatchlist(watchlistId, user);
       return {
         content: [
           {
             type: "text",
-            text: `Watchlist ${watchlistId} details`,
+            text: JSON.stringify(watchlist, null, 2),
           },
         ],
       };
@@ -107,12 +118,12 @@ export async function createMcpServer() {
     },
     async ({ watchlistId, coinId }, extra) => {
       const user = extra.authInfo?.extra?.sub as string;
-      // TODO: Implement remove coin logic
+      service.removeCoinFromWatchlist(watchlistId, user, coinId);
       return {
         content: [
           {
             type: "text",
-            text: `Removed ${coinId} from watchlist ${watchlistId}`,
+            text: `Successfully removed ${coinId} from watchlist ${watchlistId}`,
           },
         ],
       };
@@ -150,12 +161,12 @@ export async function createMcpServer() {
     },
     async ({ watchlistId, coinId }, extra) => {
       const user = extra.authInfo?.extra?.sub as string;
-      // TODO: Implement get notes logic
+      const notes = service.getWatchlistNotes(watchlistId, user, coinId);
       return {
         content: [
           {
             type: "text",
-            text: `Notes for watchlist ${watchlistId}${coinId ? ` (coin: ${coinId})` : ""}: []`,
+            text: JSON.stringify(notes, null, 2),
           },
         ],
       };
@@ -172,12 +183,12 @@ export async function createMcpServer() {
       tags: z.array(z.string()).optional().describe("Filter by tags")
     },
     async ({ page = 1, limit = 20, search, tags }, extra) => {
-      // TODO: Implement public watchlists browsing
+      const result = service.getPublicWatchlists({ page, limit, search, tags });
       return {
         content: [
           {
             type: "text",
-            text: `Public watchlists (page ${page}): []`,
+            text: JSON.stringify(result, null, 2),
           },
         ],
       };
