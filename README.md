@@ -31,8 +31,8 @@ Instead of exposing your valuable CoinGecko Pro API key directly to AI agents, t
 ## Prerequisites
 
 - Node.js 18+
-- pnpm
-- CoinGecko Pro API Key (for production usage)
+- pnpm  
+- CoinGecko Pro API Key (optional - falls back to public API if not provided)
 
 ## 🔧 Installation & Setup
 
@@ -41,15 +41,18 @@ Instead of exposing your valuable CoinGecko Pro API key directly to AI agents, t
 pnpm install
 ```
 
-2. **Configure Environment Variables**:
+2. **Configure Environment Variables** (Optional for Pro API):
 Create a `.env` file or set the following environment variables:
 ```bash
 COINGECKO_PRO_API_KEY=your_actual_pro_api_key_here
 COINGECKO_ENVIRONMENT=pro
 ```
+> **Note**: If no API key is provided, the server will automatically use CoinGecko's public endpoint with shared rate limits.
 
-3. **Update MCP Configuration**:
-In your `mcp-servers.json`, configure the server:
+3. **Choose Your MCP Configuration**:
+
+### Option A: Secure Proxy (Recommended)
+Use this server as a secure proxy with Civic Auth protection:
 ```json
 {
   "mcpServers": {
@@ -62,6 +65,36 @@ In your `mcp-servers.json`, configure the server:
         "COINGECKO_PRO_API_KEY": "YOUR_PRO_API_KEY_HERE",
         "COINGECKO_ENVIRONMENT": "pro"
       }
+    }
+  }
+}
+```
+
+### Option B: Direct CoinGecko Access
+For direct access without the secure proxy layer:
+```json
+{
+  "mcpServers": {
+    "coingecko_direct": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.api.coingecko.com/sse"
+      ]
+    }
+  }
+}
+```
+Or for Pro API:
+```json
+{
+  "mcpServers": {
+    "coingecko_pro_direct": {
+      "command": "npx", 
+      "args": [
+        "mcp-remote",
+        "https://mcp.pro-api.coingecko.com/sse"
+      ]
     }
   }
 }
@@ -96,13 +129,25 @@ This server demonstrates a secure pattern for protecting valuable API keys:
 
 ## 🏗️ Architecture
 
+### Secure Proxy Mode (Recommended)
 ```
-AI Agent (Claude/Cursor) → Civic Auth → Your MCP Server → CoinGecko Pro API
+AI Agent (Claude/Cursor) → Civic Auth → Your MCP Server → CoinGecko API
                               ↓
                          User Authentication
                               ↓
                          Protected API Access
 ```
+
+### Direct Mode (Alternative)
+```
+AI Agent (Claude/Cursor) → CoinGecko MCP Server (Public/Pro)
+```
+
+**Why choose Secure Proxy Mode?**
+- 🔐 API key protection
+- 👥 User access control  
+- 📊 Usage analytics
+- 💰 Cost management
 
 ## 📚 Available MCP Tools
 

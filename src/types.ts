@@ -118,6 +118,8 @@ export interface GetPublicWatchlistsParams {
 export interface AddCoinToWatchlistParams {
   watchlistId: string;
   coinId: string;
+  symbol?: string;
+  name?: string;
   targetPrice?: number;
   notes?: string;
 }
@@ -156,6 +158,18 @@ export interface GetCoinDetailsParams {
   coinId: string;
   includePriceData?: boolean;
   includeMarketData?: boolean;
+}
+
+// ============================================================================
+// DATABASE STATS
+// ============================================================================
+
+export interface DatabaseStats {
+  watchlistsCount: number;
+  coinsCount: number;
+  notesCount: number;
+  publicWatchlistsCount: number;
+  usersCount: number;
 }
 
 // ============================================================================

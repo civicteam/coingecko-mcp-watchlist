@@ -11,6 +11,21 @@
         "COINGECKO_PRO_API_KEY": "YOUR_PRO_API_KEY_HERE",
         "COINGECKO_ENVIRONMENT": "pro"
       }
+    },
+    "__comment": "For direct CoinGecko access (alternative to the secure proxy above):",
+    "coingecko_direct_public": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.api.coingecko.com/sse"
+      ]
+    },
+    "coingecko_direct_pro": {
+      "command": "npx",
+      "args": [
+        "mcp-remote", 
+        "https://mcp.pro-api.coingecko.com/sse"
+      ]
     }
   }
 }

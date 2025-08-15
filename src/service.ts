@@ -3,6 +3,7 @@
  * Integrates with Civic Auth and provides business logic
  */
 
+
 import { database } from './database.js';
 import {
   User,
@@ -99,6 +100,7 @@ export const addCoinToWatchlist = (watchlistId: string, userId: string, params: 
   }
 
   return database.addCoinToWatchlist(watchlistId, userId, {
+    watchlistId,
     coinId: params.coinId.trim(),
     symbol: params.symbol?.trim() || params.coinId.toUpperCase(),
     name: params.name?.trim() || params.coinId,
